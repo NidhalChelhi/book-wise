@@ -1,0 +1,62 @@
+<section class="book-overview place-content-center">
+  <div class="flex flex-col gap-5">
+    <h1>{{ title }}</h1>
+
+    <div class="book-info">
+      <p>
+        By <span class="font-semibold text-light-200"> {{ author }}</span>
+      </p>
+
+      <p>
+        Genre
+        <span class="font-semibold text-light-200">
+          {{ genre | titlecase }}</span
+        >
+      </p>
+
+      <div class="flex flex-row gap-1">
+        <img src="/icons/star.svg" alt="star" width="22" height="22" />
+        <p>{{ rating }}</p>
+      </div>
+    </div>
+
+    <div class="book-copies">
+      <p>
+        Total Copies <span>{{ totalCopies }}</span>
+      </p>
+
+      <p>
+        Available Copies <span>{{ availableCopies }}</span>
+      </p>
+    </div>
+
+    <p class="book-description">{{ description }}</p>
+    <button
+      class="px-4 py-2 bg-primary text-primary-foreground shadow hover:bg-primary/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 book-overview_btn"
+    >
+      <img src="/icons/book.svg" alt="book" width="24" height="24" />
+      <p class="font-bebas-neue text-xl text-dark-100">Borrow Book</p>
+    </button>
+  </div>
+
+  <div class="relative flex justify-center">
+    <div class="relative">
+      <app-book-cover
+        variant="wide"
+        class="z-10"
+        [coverColor]="coverColor"
+        [coverImage]="coverUrl"
+      >
+      </app-book-cover>
+
+      <div class="absolute left-16 top-10 rotate-12 opacity-40 max-sm:hidden">
+        <app-book-cover
+          variant="wide"
+          [coverColor]="coverColor"
+          [coverImage]="coverUrl"
+        >
+        </app-book-cover>
+      </div>
+    </div>
+  </div>
+</section>

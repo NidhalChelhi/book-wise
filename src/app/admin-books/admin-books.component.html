@@ -1,0 +1,81 @@
+<div class="p-8 bg-white rounded-lg">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold mb-6 text-dark-200">All Books</h1>
+
+    <button
+      class="bg-primary-admin py-3 px-5 rounded-lg flex items-center"
+      (click)="navigateToAddBook()"
+    >
+      <img src="/icons/admin/plus.svg" alt="Add" class="w-5 h-5 mr-3" />
+      <span class="text-white font-medium">Create a New Book</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <span class="text-dark-200">Loading books...</span>
+  </div>
+
+  <!-- Custom Table -->
+  <div *ngIf="!isLoading">
+    <!-- Table Header (Hidden on Small Screens) -->
+    <div
+      class="hidden md:grid md:grid-cols-5 gap-4 bg-light-300 py-3 px-4 rounded-t-lg"
+    >
+      <div class="text-lg font-bold text-dark-200">Title</div>
+      <div class="text-lg font-bold text-dark-200">Author</div>
+      <div class="text-lg font-bold text-dark-200">Genre</div>
+      <div class="text-lg font-bold text-dark-200">Date Created</div>
+      <div class="text-lg font-bold text-dark-200">Actions</div>
+    </div>
+
+    <!-- Table Rows -->
+    <div class="bg-white rounded-b-lg">
+      <div
+        *ngFor="let book of books"
+        class="grid grid-cols-1 md:grid-cols-5 gap-4 py-3 px-4 border-light-300 border-b last:border-b-0 hover:bg-light-300 font-semibold"
+      >
+        <!-- Title Column -->
+        <div class="flex items-center gap-2 text-base text-dark-200">
+          <img
+            [src]="book.coverUrl"
+            [alt]="book.title"
+            class="w-10 h-14 rounded-lg object-cover"
+          />
+          <span>{{ book.title }}</span>
+        </div>
+
+        <!-- Author Column -->
+        <div class="flex items-center text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">Author: </span>
+          {{ book.author }}
+        </div>
+
+        <!-- Genre Column -->
+        <div class="flex items-center text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">Genre: </span>
+          <span class="rounded-full py-1 px-2">
+            {{ book.genre | titlecase }}
+          </span>
+        </div>
+
+        <!-- Date Created Column -->
+        <div class="flex items-center text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">Date Created: </span>
+          {{ book.createdAt | date : "MMM, dd yyyy" }}
+        </div>
+
+        <!-- Actions Column -->
+        <div class="flex items-center gap-2 text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">Actions: </span>
+          <button (click)="editBook(book.id)">
+            <img src="/icons/admin/edit.svg" alt="Edit" class="w-5 h-5" />
+          </button>
+          <button (click)="deleteBook(book.id)">
+            <img src="/icons/admin/trash.svg" alt="Delete" class="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="p-8 bg-white rounded-lg">
+  <h1 class="text-2xl font-bold mb-6 text-dark-200">All Users</h1>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <span class="text-dark-200">Loading users...</span>
+  </div>
+
+  <!-- Custom Table -->
+  <div *ngIf="!isLoading">
+    <!-- Table Header -->
+    <div class="grid grid-cols-6 gap-4 bg-light-300 py-3 px-4 rounded-t-lg">
+      <div class="text-base font-bold text-dark-200">Fullname</div>
+      <div class="text-base font-bold text-dark-200">Role</div>
+      <div class="text-base font-bold text-dark-200">Phone Number</div>
+      <div class="text-base font-bold text-dark-200">Borrow Requests</div>
+      <div class="text-base font-bold text-dark-200">Date Joined</div>
+      <div class="text-base font-bold text-dark-200">Action</div>
+    </div>
+
+    <!-- Table Rows -->
+    <div class="bg-white rounded-b-lg">
+      <div
+        *ngFor="let user of users"
+        class="grid grid-cols-6 gap-4 py-3 px-4 border-light-300 border-b last:border-b-0 hover:bg-light-300"
+      >
+        <!-- Name Column -->
+        <div class="flex items-center">
+          <div
+            class="w-10 h-10 rounded-full bg-[#ccd7ff] flex items-center justify-center text-base font-bold text-dark-100"
+          >
+            {{ user.fullName[0] }}
+          </div>
+          <div class="ml-3">
+            <div class="text-base font-bold text-dark-200">
+              {{ user.fullName }}
+            </div>
+            <div class="text-sm text-[#64748B]">{{ user.email }}</div>
+          </div>
+        </div>
+
+        <!-- Role Column -->
+        <div class="text-base flex items-center px-2">
+          <span
+            [ngClass]="{
+              'bg-[#fdf2fa] text-[#c01574]': user.role === 'user',
+              'bg-[#ecfdf3] text-[#027948]': user.role === 'admin'
+            }"
+            class="rounded-full py-1 px-2"
+          >
+            {{ user.role | titlecase }}
+          </span>
+        </div>
+
+        <!-- Phone Number Column -->
+        <div class="flex items-center text-base text-dark-200">
+          {{ user.phoneNumber }}
+        </div>
+
+        <!-- BorrowRequests Column -->
+        <div class="flex items-center text-base text-dark-200">
+          {{ user.borrowRequests.length }}
+        </div>
+
+        <!-- Date Joined Column -->
+        <div class="flex items-center text-base text-dark-200">
+          {{ user.createdAt | date : "MMM, dd yyyy" }}
+        </div>
+
+        <!-- Action Column -->
+        <div class="flex items-center">
+          <button (click)="deleteUser(user.id)">
+            <img src="/icons/admin/trash.svg" alt="Delete" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

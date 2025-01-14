@@ -1,0 +1,17 @@
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-6 bg-light-300">
+    <div class="flex flex-col gap-2 px-6 mb-8">
+      <h1 class="text-2xl font-bold text-dark-400">
+        Welcome, {{ userFullName }}
+      </h1>
+      <p class="text-lg text-slate-500">
+        Monitor and manage your application from here.
+      </p>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

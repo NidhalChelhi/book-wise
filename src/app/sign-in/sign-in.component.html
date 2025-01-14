@@ -1,0 +1,78 @@
+<main class="auth-container">
+  <section class="auth-form">
+    <div class="auth-box">
+      <div class="flex flex-row gap-3">
+        <img src="/icons/logo.svg" alt="logo" />
+        <h1 class="text-2xl font-semibold text-white">BookWise</h1>
+      </div>
+
+      <div>
+        <div class="flex flex-col gap-4">
+          <h1 class="text-2xl font-semibold text-white">
+            Welcome back to BookWise
+          </h1>
+          <p class="text-light-100">
+            Access the vast collection of resources, and stay updated
+          </p>
+          <form
+            [formGroup]="signInForm"
+            (ngSubmit)="onSubmit()"
+            class="w-full space-y-6"
+          >
+            <div class="space-y-2">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                formControlName="email"
+                type="email"
+                class="form-input"
+                placeholder="Enter your email"
+              />
+
+              @if (signInForm.get('email')?.invalid &&
+              signInForm.get('email')?.touched) {
+              <div class="text-red-500 text-xs">Valid email is required.</div>
+              }
+            </div>
+            <div class="space-y-2">
+              <label for="password">Password</label>
+              <input
+                id="password"
+                formControlName="password"
+                type="password"
+                class="form-input"
+                placeholder="Enter your password"
+              />
+              @if(signInForm.get('password')?.invalid &&
+              signInForm.get('password')?.touched) {
+              <div class="text-red-500 text-xs">Password is required.</div>
+              }
+            </div>
+            <button
+              type="submit"
+              class="form-btn"
+              [disabled]="signInForm.invalid"
+            >
+              Sign In
+            </button>
+          </form>
+
+          <p class="text-center text-base font-medium">
+            New to BookWise?
+            <a routerLink="/sign-up" class="font-bold text-primary"
+              >Create an account</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="auth-illustration">
+    <img
+      src="/images/auth-illustration.png"
+      alt="auth illustration"
+      class="size-full object-cover"
+    />
+  </section>
+</main>

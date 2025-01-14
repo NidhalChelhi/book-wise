@@ -1,0 +1,52 @@
+<main class="root-container">
+  <div class="mx-auto max-w-7xl">
+    <app-header></app-header>
+
+    <div class="mt-20 pb-20">
+      <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+        <span class="text-dark-200">Loading book details...</span>
+      </div>
+      <app-book-overview
+        *ngIf="book && !isLoading"
+        [title]="book.title"
+        [author]="book.author"
+        [description]="book.description"
+        [availableCopies]="10"
+        [genre]="book.genre"
+        [rating]="book.rating"
+        [totalCopies]="10"
+        [coverColor]="book.coverColor"
+        [coverUrl]="book.coverUrl"
+      />
+      <div class="book-details" *ngIf="book && !isLoading">
+        <div class="flex-[1.5]">
+          <section class="mt-10 flex flex-col gap-7">
+            <h3 class="text-xl font-bold text-light-100">Summary</h3>
+
+            <div class="space-y-5 text-xl text-light-100">
+              <p *ngFor="let line of book.summary.split('\n')">{{ line }}</p>
+            </div>
+          </section>
+        </div>
+
+        <!-- Similar Books Section -->
+        <div class="mt-12">
+          <h3 class="text-xl font-bold text-light-100">More Similar Books</h3>
+          <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-6">
+            <div
+              *ngFor="let relatedBook of relatedBooks"
+              class="cursor-pointer"
+              (click)="navigateToBook(relatedBook.id)"
+            >
+              <app-book-cover
+                [coverColor]="relatedBook.coverColor"
+                [coverImage]="relatedBook.coverUrl"
+                [variant]="'medium'"
+              ></app-book-cover>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

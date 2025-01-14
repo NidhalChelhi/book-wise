@@ -1,0 +1,27 @@
+<header class="my-10 flex justify-between gap-5">
+  <a href="/">
+    <img src="/logo.png" alt="logo" height="40" />
+  </a>
+
+  <ul class="flex flex-row items-center gap-8 text-xl">
+    <li class="text-white text-xl hover:text-primary cursor-pointer">
+      <a routerLink="/home">Home</a>
+    </li>
+    <li class="text-white text-xl hover:text-primary cursor-pointer">
+      <a routerLink="/search">Search</a>
+    </li>
+    <li *ngIf="userEmail" class="">
+      <div class="flex flex-row gap-2 items-center justify-center h-full">
+        <div
+          class="p-2 size-8 rounded-full bg-gray-300 flex items-center justify-center text-sm text-dark-100 font-black"
+        >
+          {{ userEmail[0] | uppercase }}
+        </div>
+        <span class="font-semibold text-white text-lg">{{ userFullName }}</span>
+      </div>
+    </li>
+    <li *ngIf="userEmail" class="cursor-pointer" (click)="logout()">
+      <img src="/icons/logout.svg" alt="logout" />
+    </li>
+  </ul>
+</header>
