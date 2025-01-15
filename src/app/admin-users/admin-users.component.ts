@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../services/users.service';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-users',
@@ -13,7 +13,10 @@ export class AdminUsersComponent implements OnInit {
   users: any[] = [];
   isLoading = true;
 
-  constructor(private usersService: UsersService, private router: Router) {}
+  constructor(
+    private usersService: UsersService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.fetchUsers();
@@ -33,16 +36,15 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
-  viewIdCard(idCardUrl: string): void {
-    window.open(idCardUrl, '_blank'); // Open ID card in a new tab
-  }
-
-  editUser(userId: number): void {
-    this.router.navigate([`/admin-panel/users/edit/${userId}`]);
-  }
-
-  deleteUser(userId: number): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-    }
+  deleteUser(userId: any): void {
+    this.usersService.deleteUser(userId).subscribe({
+      next: () => {
+        this.fetchUsers();
+        this.toastr.success('User deleted successfully');
+      },
+      error: (error) => {
+        console.error('Error deleting user:', error);
+      },
+    });
   }
 }

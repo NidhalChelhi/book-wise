@@ -1,0 +1,76 @@
+<div class="p-8 bg-white rounded-lg">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold mb-6 text-dark-200">Borrow Requests</h1>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <span class="text-dark-200">Loading borrow requests...</span>
+  </div>
+
+  <!-- Custom Table -->
+  <div *ngIf="!isLoading">
+    <!-- Table Header (Hidden on Small Screens) -->
+    <div
+      class="hidden md:grid md:grid-cols-5 gap-4 bg-light-300 py-3 px-4 rounded-t-lg"
+    >
+      <div class="text-lg font-bold text-dark-200">User</div>
+      <div class="text-lg font-bold text-dark-200">Book</div>
+      <div class="text-lg font-bold text-dark-200">Book Copy</div>
+      <div class="text-lg font-bold text-dark-200">Status</div>
+      <div class="text-lg font-bold text-dark-200">Date Created</div>
+    </div>
+
+    <!-- Table Rows -->
+    <div class="bg-white rounded-b-lg">
+      <div
+        *ngFor="let request of requests"
+        class="grid grid-cols-1 md:grid-cols-5 gap-4 py-3 px-4 border-light-300 border-b last:border-b-0 hover:bg-light-300 font-semibold"
+      >
+        <!-- User Column -->
+        <div class="flex items-center gap-2 text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">User: </span>
+          {{ request.user?.fullName || "Unknown User" }}
+        </div>
+
+        <!-- Book Column -->
+        <div class="flex items-center gap-2 text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">Book: </span>
+          <img
+            [src]="request.book?.coverUrl"
+            [alt]="request.book?.title"
+            class="w-10 h-14 rounded-lg object-cover"
+          />
+          <span>{{ request.book?.title || "Unknown Book" }}</span>
+        </div>
+
+        <!-- Book Copy Column -->
+        <div class="flex items-center text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">Book Copy: </span>
+          {{ request.bookCopy?.copyId || "Unknown Copy" }}
+        </div>
+
+        <!-- Status Column -->
+        <div class="flex items-center text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">Status: </span>
+          <span
+            class="rounded-full py-1 px-2"
+            [ngClass]="{
+              'bg-green-100 text-green-800': request.status === 'approved',
+              'bg-yellow-100 text-yellow-800': request.status === 'pending',
+              'bg-red-100 text-red-800': request.status === 'returned'
+            }"
+          >
+            {{ request.status | titlecase }}
+          </span>
+        </div>
+
+        <!-- Date Created Column -->
+        <div class="flex items-center text-base text-dark-200">
+          <span class="md:hidden font-bold mr-2">Date Created: </span>
+          {{ request.createdAt | date : "MMM, dd yyyy" }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

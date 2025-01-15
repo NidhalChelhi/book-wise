@@ -9,6 +9,7 @@ import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { AdminBooksComponent } from './admin-books/admin-books.component';
 import { AddBookComponent } from './add-book/add-book.component';
 import { EditBookComponent } from './edit-book/edit-book.component';
+import { AdminBorrowRequestsComponent } from './admin-borrow-requests/admin-borrow-requests.component';
 
 export const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
       { path: 'books', component: AdminBooksComponent },
       { path: 'books/add', component: AddBookComponent },
       { path: 'books/edit/:id', component: EditBookComponent },
+      { path: 'borrow-requests', component: AdminBorrowRequestsComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },

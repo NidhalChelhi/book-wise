@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Book } from '../models/book.model'; // Import the Book interface
 import { BookGenre } from '../models/book-genre.enum'; // Import the BookGenre enum
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-books',
@@ -15,7 +16,11 @@ export class AdminBooksComponent implements OnInit {
   books: Book[] = []; // Use the Book interface
   isLoading = true;
 
-  constructor(private booksService: BooksService, private router: Router) {}
+  constructor(
+    private booksService: BooksService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.fetchBooks();
@@ -41,16 +46,15 @@ export class AdminBooksComponent implements OnInit {
     this.router.navigate([`/admin-panel/books/edit/${bookId}`]);
   }
   deleteBook(bookId: string): void {
-    if (confirm('Are you sure you want to delete this book?')) {
-      this.booksService.deleteBook(bookId).subscribe({
-        next: () => {
-          this.books = this.books.filter((book) => book.id !== bookId); // Remove the book from the list
-        },
-        error: (error) => {
-          console.error('Error deleting book:', error);
-          alert('Failed to delete book');
-        },
-      });
-    }
+    this.booksService.deleteBook(bookId).subscribe({
+      next: () => {
+        this.books = this.books.filter((book) => book.id !== bookId);
+        this.toastr.success('Book deleted successfully');
+      },
+      error: (error) => {
+        console.error('Error deleting book:', error);
+        this.toastr.error('Error deleting book');
+      },
+    });
   }
 }

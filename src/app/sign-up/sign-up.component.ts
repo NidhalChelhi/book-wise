@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,7 +23,8 @@ export class SignUpComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.signUpForm = this.fb.group({
       fullName: ['', [Validators.required]],
@@ -48,7 +50,7 @@ export class SignUpComponent {
         },
         error: (error) => {
           console.error('Registration failed', error);
-          alert('Registration failed. Please try again.');
+          this.toastr.error('Registration failed', 'Error');
         },
       });
     }

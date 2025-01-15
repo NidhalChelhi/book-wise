@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { BookGenre } from '../models/book-genre.enum';
 import { CreateBookDto } from '../models/create-book.dto';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-book',
@@ -24,7 +25,8 @@ export class AddBookComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private booksService: BooksService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.addBookForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
@@ -38,7 +40,7 @@ export class AddBookComponent implements OnInit {
           Validators.required,
           Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/),
         ],
-      ], // Hex color validation
+      ],
       coverUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
       summary: ['', [Validators.required]],
     });
@@ -50,32 +52,29 @@ export class AddBookComponent implements OnInit {
     if (this.addBookForm.valid) {
       const formValue = this.addBookForm.value;
 
-      // Generate ID dynamically (e.g., combination of title, author, and genre)
       const id = `${formValue.title
         .toLowerCase()
         .replace(/\s+/g, '-')}-${formValue.author
         .toLowerCase()
         .replace(/\s+/g, '-')}-${formValue.genre.toLowerCase()}`;
 
-      // Ensure genre is lowercase
       const genre = formValue.genre.toLowerCase() as BookGenre;
 
-      // Create the DTO
       const newBook: CreateBookDto = {
         id,
         title: formValue.title,
         author: formValue.author,
         genre,
-        rating: parseFloat(formValue.rating), // Ensure rating is a number
+        rating: parseFloat(formValue.rating),
         description: formValue.description,
         coverColor: formValue.coverColor,
         coverUrl: formValue.coverUrl,
         summary: formValue.summary,
       };
 
-      // Send the request
       this.booksService.createBook(newBook).subscribe({
         next: () => {
+          this.toastr.success('Book added successfully!', 'Success');
           this.router.navigate(['/admin-panel/books']);
         },
         error: (error) => {
@@ -85,16 +84,13 @@ export class AddBookComponent implements OnInit {
     }
   }
 
-  // Handle color input changes
   onColorInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const color = input.value;
 
-    // Update the form control value
     this.addBookForm.get('coverColor')?.setValue(color);
   }
 
-  // Helper method to check if a field is invalid
   isFieldInvalid(field: string): boolean {
     const control = this.addBookForm.get(field);
     return control
@@ -102,7 +98,6 @@ export class AddBookComponent implements OnInit {
       : false;
   }
 
-  // Helper method to get validation messages
   getErrorMessage(field: string): string {
     const control = this.addBookForm.get(field);
     if (control?.errors?.['required']) {

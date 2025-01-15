@@ -10,6 +10,7 @@ import { BooksService } from '../services/books.service';
 import { BookGenre } from '../models/book-genre.enum';
 import { CreateBookDto } from '../models/create-book.dto';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-book',
@@ -26,7 +27,8 @@ export class EditBookComponent implements OnInit {
     private fb: FormBuilder,
     private booksService: BooksService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {
     this.editBookForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
@@ -82,6 +84,8 @@ export class EditBookComponent implements OnInit {
 
       this.booksService.updateBook(this.bookId, updatedBook).subscribe({
         next: () => {
+          this.toastr.success('Book updated successfully!', 'Success');
+
           this.router.navigate(['/admin-panel/books']);
         },
         error: (error) => {
